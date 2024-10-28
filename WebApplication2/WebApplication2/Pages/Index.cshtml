@@ -1,0 +1,44 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Görüntü Şifreleme";
+}
+
+<h2>Görüntü Şifreleme ve Çözme</h2>
+
+<form asp-action="Encrypt" method="post" enctype="multipart/form-data">
+    <div>
+        <label>Ses Dosyası:</label>
+        <input type="file" name="audioFile" required />
+    </div>
+    <div>
+        <label>Görüntü Dosyası (Anahtar için):</label>
+        <input type="file" name="imageFile" required />
+    </div>
+    <div>
+        <label>Şifrelenecek Görüntü Dosyası:</label>
+        <input type="file" name="imageToEncrypt" required />
+    </div>
+    <button type="submit">Şifrele</button>
+</form>
+
+@if (TempData["EncryptedImage"] != null)
+{
+    <h3>Şifrelenmiş Görüntü</h3>
+    <img src="data:image/png;base64,@TempData["EncryptedImage"]" alt="Şifrelenmiş Görüntü" />
+    <form asp-action="Decrypt" method="post">
+        <button type="submit">Şifre Çöz</button>
+    </form>
+}
+
+@if (TempData["DecryptedImage"] != null)
+{
+    <h3>Çözülmüş Görüntü</h3>
+    <img src="data:image/png;base64,@TempData["DecryptedImage"]" alt="Çözülmüş Görüntü" />
+}
+
+@if (ViewBag.Error != null)
+{
+    <div style="color: red">@ViewBag.Error</div>
+}
+
